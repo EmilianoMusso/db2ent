@@ -33,15 +33,22 @@ namespace db2ent
             var entGenericDb = new EntGenericDb(entSqlServer);
             // ***
 
-            entGenericDb.OpenConnection();
+            var results = "";
 
-            // TableName and NumRecords inherited from arguments
-            var ent = entGenericDb.TableToEntity(opts.TableName, opts.NumRecords, opts.Where);
+            if (entGenericDb.OpenConnection())
+            {
+                // TableName and NumRecords inherited from arguments
+                var tableList = opts.TableName.Split(',');
+                foreach (var tablename in tableList)
+                {
+                    results = entGenericDb.TableToEntity(tablename.Trim(), opts.NumRecords, opts.Where);
+                    // Currently outputs result to console
+                    Console.WriteLine(results);
+                }
 
-            entGenericDb.CloseConnection();
+                entGenericDb.CloseConnection();
+            }
 
-            // Currently outputs result to console
-            Console.WriteLine(ent.ToString());
             return 0;
         }
     }

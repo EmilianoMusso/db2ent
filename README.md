@@ -12,6 +12,11 @@ It can be used to quickly generate seed instructions, to be used for example in 
 db2ent --connectionstring="Data Source=INSTANCE;Initial Catalog=MYDB;User Id=MYUSER;Password=MYPASS" --tablename=MYTABLE [--numrecords=99999] [--where=CONDITIONAL_CLAUSE]
 ```
 
+_tablename_ parameter accept also a list of tables, with comma-separated names, in the form of:
+```
+--tablename=MYTABLE01,MYTABLE02,MYTABLE03 [...]
+```
+
 Currently, db2ent outputs to console only. To save its results to file, you can pipe the execution towards a file path
 
 ###### Example

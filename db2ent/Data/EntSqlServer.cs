@@ -56,7 +56,8 @@ namespace db2ent.Data
                 sb.AppendLine("\n{");
 
                 var completeWhere = string.IsNullOrEmpty(whereClause) ? "" : "WHERE " + whereClause;
-                using var cmd = new SqlCommand($"SELECT TOP({numRecords})* FROM {tableName} {completeWhere}", connection);
+                using var cmd = new SqlCommand($@"SET NOCOUNT ON
+                                                  SELECT TOP({numRecords})* FROM {tableName} {completeWhere}", connection);
 
                 using var da = new SqlDataAdapter(cmd);
                 using var dt = new DataTable(tableName);
@@ -67,7 +68,7 @@ namespace db2ent.Data
                 // Extension method to process datatable to POCO objects
                 sb.AppendLine(dt.DataTableToString());
 
-                sb.AppendLine("}");
+                sb.AppendLine("};");
                 return sb.ToString();
             }
             catch (Exception)
