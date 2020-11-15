@@ -1,4 +1,5 @@
 ﻿using db2ent.Misc;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
@@ -7,6 +8,8 @@ namespace db2ent.Data
 {
     /// <summary>
     /// EntConnector inherited class to specifically address SQL Server tables
+    /// Referer to EntConnector interface for informations
+    /// </summary>
     /// </summary>
     public class EntSqlServer: EntConnector
     {
@@ -20,49 +23,57 @@ namespace db2ent.Data
 
         public bool CloseConnection()
         {
-            this.connection?.Dispose();
-            return true;
+            try
+            {
+                this.connection?.Dispose();
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public bool OpenConnection()
         {
-            this.connection = new SqlConnection(this.connectionString);
-            this.connection.Open();
-            return true;
+            try
+            {
+                this.connection = new SqlConnection(this.connectionString);
+                this.connection.Open();
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public string TableToEntity(string tableName, int numRecords)
+        public string TableToEntity(string tableName, int numRecords, string whereClause = "")
         {
-            var sb = new StringBuilder($"var {tableName.ToLower()}List = new List<{tableName}>()");
-            sb.AppendLine("\n{");
-
-            using var cmd = new SqlCommand($"SELECT TOP({numRecords})* FROM {tableName}", connection);
-
-            using var da = new SqlDataAdapter(cmd);
-            using var dt = new DataTable(tableName);
-
-            da.Fill(dt);
-            da.FillSchema(dt, SchemaType.Mapped);
-
-            for (int rowIndex = 0; rowIndex < dt.Rows.Count; rowIndex++)
+            try
             {
-                sb.AppendLine($"\tnew {tableName}()");
-                sb.AppendLine("\t{");
+                var sb = new StringBuilder($"var {tableName.ToLower()}List = new List<{tableName}>()");
+                sb.AppendLine("\n{");
 
-                for (int colIndex = 0; colIndex < dt.Columns.Count; colIndex++)
-                {
-                    sb.Append("\t\t")
-                      .Append(dt.Columns[colIndex].ColumnName)
-                      .Append(" = ")
-                      .Append(dt.Rows[rowIndex].ItemArray[colIndex].ToTypedString(dt.Columns[colIndex].DataType))
-                      .AppendLine(",");
-                }
+                var completeWhere = string.IsNullOrEmpty(whereClause) ? "" : "WHERE " + whereClause;
+                using var cmd = new SqlCommand($"SELECT TOP({numRecords})* FROM {tableName} {completeWhere}", connection);
 
-                sb.AppendLine("\t},");
+                using var da = new SqlDataAdapter(cmd);
+                using var dt = new DataTable(tableName);
+
+                da.Fill(dt);
+                da.FillSchema(dt, SchemaType.Mapped);
+
+                // Extension method to process datatable to POCO objects
+                sb.AppendLine(dt.DataTableToString());
+
+                sb.AppendLine("}");
+                return sb.ToString();
             }
-
-            sb.AppendLine("}");
-            return sb.ToString();
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

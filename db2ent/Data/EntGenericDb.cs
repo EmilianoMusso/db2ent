@@ -1,7 +1,7 @@
 ﻿namespace db2ent.Data
 {
     /// <summary>
-    /// Generic class to access data operations. Referer to EntConnector interface for informations8
+    /// Generic class to access data operations. Referer to EntConnector interface for informations
     /// </summary>
     public class EntGenericDb : EntConnector
     {
@@ -21,9 +21,9 @@
             return this._connector.OpenConnection();
         }
 
-        public string TableToEntity(string tableName, int numRecords)
+        public string TableToEntity(string tableName, int numRecords, string whereClause = "")
         {
-            return this._connector.TableToEntity(tableName, numRecords);
+            return this._connector.TableToEntity(tableName, numRecords, whereClause);
         }
     }
 }

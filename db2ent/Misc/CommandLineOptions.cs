@@ -12,5 +12,8 @@ namespace db2ent.Misc
 
         [Option(Default = 99999, Required = false, HelpText = "Maximum number of records to process from table")]
         public int NumRecords { get; set; }
+
+        [Option(Default = "", Required = false, HelpText = "T-SQL WHERE Clause to filter data")]
+        public string Where { get; set; }
     }
 }

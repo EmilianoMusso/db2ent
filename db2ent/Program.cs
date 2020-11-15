@@ -36,7 +36,7 @@ namespace db2ent
             entGenericDb.OpenConnection();
 
             // TableName and NumRecords inherited from arguments
-            var ent = entGenericDb.TableToEntity(opts.TableName, opts.NumRecords);
+            var ent = entGenericDb.TableToEntity(opts.TableName, opts.NumRecords, opts.Where);
 
             entGenericDb.CloseConnection();
 

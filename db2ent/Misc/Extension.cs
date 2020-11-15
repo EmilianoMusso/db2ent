@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Text;
 
 namespace db2ent.Misc
 {
@@ -56,6 +58,37 @@ namespace db2ent.Misc
                 default:
                     return s;
             }
+        }
+
+        /// <summary>
+        /// Executes POCO representation of given table as plain text
+        /// </summary>
+        /// <param name="dt">The DataTable to process</param>
+        /// <returns></returns>
+        public static string DataTableToString(this DataTable dt)
+        {
+            var sb = new StringBuilder();
+
+            if (dt.Rows.Count == 0) sb.AppendLine("\t// No records where found");
+
+            for (int rowIndex = 0; rowIndex < dt.Rows.Count; rowIndex++)
+            {
+                sb.AppendLine($"\tnew {dt.TableName}()");
+                sb.AppendLine("\t{");
+
+                for (int colIndex = 0; colIndex < dt.Columns.Count; colIndex++)
+                {
+                    sb.Append("\t\t")
+                      .Append(dt.Columns[colIndex].ColumnName)
+                      .Append(" = ")
+                      .Append(dt.Rows[rowIndex].ItemArray[colIndex].ToTypedString(dt.Columns[colIndex].DataType))
+                      .AppendLine(",");
+                }
+
+                sb.AppendLine("\t},");
+            }
+
+            return sb.ToString();
         }
     }
 }

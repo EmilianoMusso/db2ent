@@ -22,6 +22,6 @@
         /// </summary>
         /// <param name="tableName">The table name to be processed</param>
         /// <returns></returns>
-        public string TableToEntity(string tableName, int numRecords);
+        public string TableToEntity(string tableName, int numRecords, string whereClause = "");
     }
 }
