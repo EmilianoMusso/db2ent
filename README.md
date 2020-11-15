@@ -1,3 +1,5 @@
+![.NET Core](https://github.com/EmilianoMusso/db2ent/workflows/.NET%20Core/badge.svg)
+
 ## db2ent
 ###### Database table records to List<> of new POCO with properties
 
