@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "db2ent": {
+      "commandName": "Project",
+      "commandLineArgs": "--connectionstring=\"Data Source=localhost\\SQLEXPRESS;Initial Catalog=ESOLVER_MCJ;User Id=sa;Password=Sistemi123\" --tablename=YMcjTipiServizio"
+    }
+  }
+}
