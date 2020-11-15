@@ -5,14 +5,14 @@
 objects with type derived from table name, and properties setting from the record itself.
 It can be used to quickly generate seed instructions, to be used for example in ORMs like Entity Framework.
 
-######Usage
+###### Usage
 ```
 db2ent --connectionstring="Data Source=INSTANCE;Initial Catalog=MYDB;User Id=MYUSER;Password=MYPASS" --tablename=MYTABLE [--numrecords=99999] [--where=CONDITIONAL_CLAUSE]
 ```
 
 Currently, db2ent outputs to console only. To save its results to file, you can pipe the execution towards a file path
 
-######Example
+###### Example
 Lets consider a SQL table, named _Comuni_ with the following fields:
 
 ```sql
