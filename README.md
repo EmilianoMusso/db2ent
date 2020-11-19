@@ -195,3 +195,29 @@ var comuniList = new List<Comuni>()
         // Truncated data for demonstrative purposes
 }
 ```
+
+db2ent produces also class representations. 
+Given the schema seen above as an example, the program will output the following code:
+
+```csharp
+public partial class Comuni
+{
+    public string CodStato {get; set;}
+    public string CodProvincia {get; set;}
+    public string Comune {get; set;}
+    public string CodRegione {get; set;}
+    public string DesEstesa {get; set;}
+    public string Cap {get; set;}
+    public string PrefTelefonico {get; set;}
+    public string CodiceIrpef {get; set;}
+    public Int32 CodiceIstat {get; set;}
+    public DateTime FirmaUltVarData {get; set;}
+    public Int32 FirmaUltVarOra {get; set;}
+    public string FirmaUltVarStazione {get; set;}
+    public string FirmaUltVarOperatore {get; set;}
+    public Decimal CodLatitudine {get; set;}
+    public Decimal CodLongitudine {get; set;}
+    public DateTime DataInizioValidita {get; set;}
+    public DateTime DataFineValidita {get; set;}
+}
+```

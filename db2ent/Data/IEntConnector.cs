@@ -3,7 +3,7 @@
     /// <summary>
     /// Generic interface for data access classes
     /// </summary>
-    public interface EntConnector
+    public interface IEntConnector
     {
         /// <summary>
         /// Establish and opens a connection to database

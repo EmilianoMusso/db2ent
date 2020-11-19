@@ -11,7 +11,7 @@ namespace db2ent.Data
     /// Referer to EntConnector interface for informations
     /// </summary>
     /// </summary>
-    public class EntSqlServer: EntConnector
+    public class EntSqlServer: IEntConnector
     {
         private readonly string connectionString;
         private SqlConnection connection;
@@ -69,6 +69,10 @@ namespace db2ent.Data
                 sb.AppendLine(dt.DataTableToString());
 
                 sb.AppendLine("};");
+
+                // Extension method to create a POCO class declaration
+                sb.AppendLine(dt.SchemaToClass());
+
                 return sb.ToString();
             }
             catch (Exception)

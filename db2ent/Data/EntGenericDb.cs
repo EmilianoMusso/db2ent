@@ -3,11 +3,11 @@
     /// <summary>
     /// Generic class to access data operations. Referer to EntConnector interface for informations
     /// </summary>
-    public class EntGenericDb : EntConnector
+    public class EntGenericDb : IEntConnector
     {
-        EntConnector _connector;
+        IEntConnector _connector;
 
-        public EntGenericDb(EntConnector connector)
+        public EntGenericDb(IEntConnector connector)
         {
             this._connector = connector;
         }

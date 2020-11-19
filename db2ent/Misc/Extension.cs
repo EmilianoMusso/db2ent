@@ -90,5 +90,27 @@ namespace db2ent.Misc
 
             return sb.ToString();
         }
+
+        /// <summary>
+        /// Generates a class representation from the given DataTable schema
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static string SchemaToClass(this DataTable dt)
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"public partial class {dt.TableName}")
+              .AppendLine("{");
+
+            foreach(DataColumn column in dt.Columns)
+            {
+                sb.AppendLine($"\tpublic {column.DataType.Name} {column.ColumnName} {{ get; set; }}");
+            }
+
+            sb.AppendLine("};");
+
+            return sb.ToString();
+        }
     }
 }
