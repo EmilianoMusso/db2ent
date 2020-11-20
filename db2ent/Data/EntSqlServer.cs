@@ -1,15 +1,13 @@
-﻿using db2ent.Misc;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 
 namespace db2ent.Data
 {
     /// <summary>
     /// EntConnector inherited class to specifically address SQL Server tables
-    /// Referer to EntConnector interface for informations
-    /// </summary>
+    /// To implement other providers, new classes must inherit from IEntConnector interface
+    /// Referer to IEntConnector interface for informations
     /// </summary>
     public class EntSqlServer: IEntConnector
     {
@@ -23,22 +21,16 @@ namespace db2ent.Data
 
         public bool CloseConnection()
         {
-            try
-            {
-                this.connection?.Dispose();
-                return true;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            this.connection?.Dispose();
+            return true;
         }
 
         public bool OpenConnection()
         {
+            this.connection = new SqlConnection(this.connectionString);
+            
             try
             {
-                this.connection = new SqlConnection(this.connectionString);
                 this.connection.Open();
                 return true;
             }
@@ -48,37 +40,22 @@ namespace db2ent.Data
             }
         }
 
-        public string TableToEntity(string tableName, int numRecords, string whereClause = "")
+        public DataTable TableToEntity(string tableName, int numRecords, string whereClause = "")
         {
+            using var cmd = new SqlCommand($@"SET NOCOUNT ON
+                                              SELECT TOP({numRecords})* FROM {tableName} {whereClause}", connection);
+
+            using var da = new SqlDataAdapter(cmd);
+            using var dt = new DataTable(tableName);
+            
             try
             {
-                var sb = new StringBuilder($"var {tableName.ToLower()}List = new List<{tableName}>()");
-                sb.AppendLine("\n{");
-
-                var completeWhere = string.IsNullOrEmpty(whereClause) ? "" : "WHERE " + whereClause;
-                using var cmd = new SqlCommand($@"SET NOCOUNT ON
-                                                  SELECT TOP({numRecords})* FROM {tableName} {completeWhere}", connection);
-
-                using var da = new SqlDataAdapter(cmd);
-                using var dt = new DataTable(tableName);
-
                 da.Fill(dt);
                 da.FillSchema(dt, SchemaType.Mapped);
-
-                // Extension method to process datatable to POCO objects
-                sb.AppendLine(dt.DataTableToString());
-
-                sb.AppendLine("};");
-
-                // Extension method to create a POCO class declaration
-                sb.AppendLine(dt.SchemaToClass());
-
-                return sb.ToString();
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            catch { }
+
+            return dt;
         }
     }
 }

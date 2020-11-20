@@ -29,27 +29,25 @@ namespace db2ent.Misc
         {
             var s = o.ToString();
 
-            switch (type.Name.ToLower())
+            switch (Type.GetTypeCode(type))
             {
-                case "int":
-                case "int32":
-                case "int64":
+                case TypeCode.Int32:
+                case TypeCode.Int64:
                     long.TryParse(s.IfStringVoidForNumeric(), out long numValue);
                     return numValue.ToString();
 
-                case "bool":
-                case "boolean":
+                case TypeCode.Boolean:
                     bool.TryParse(s.IfStringVoidForNumeric(), out bool boolValue);
                     return boolValue.ToString().ToLower();
 
-                case "decimal":
+                case TypeCode.Decimal:
                     decimal.TryParse(s.IfStringVoidForNumeric(), out decimal decValue);
                     return decValue.ToString().Replace(",", ".");
 
-                case "string":
+                case TypeCode.String:
                     return $"\"{s.Replace("\"", "\"\"")}\"";
 
-                case "datetime":
+                case TypeCode.DateTime:
                     DateTime.TryParse(s, out DateTime dateTimeStr);
                     return $"new DateTime({dateTimeStr.Year}, {dateTimeStr.Month}, {dateTimeStr.Day}, {dateTimeStr.Hour}, {dateTimeStr.Minute}, {dateTimeStr.Second})";
 

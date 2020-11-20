@@ -9,8 +9,9 @@ namespace db2ent
     {
         static void Main(string[] args)
         {
-            // Parses command line arguments using CommandLineParser (https://www.nuget.org/packages/CommandLineParser/2.8.0/)
+            // Parses command line arguments using CommandLineParser
             // Uses db2Ent.Misc.CommandLineOptions to store parsed values
+            // <see>https://www.nuget.org/packages/CommandLineParser/2.8.0/</see>
             Parser.Default.ParseArguments<CommandLineOptions>(args)
                           .MapResult(
                             (opts) => RunProcedure(opts), (errs) => { return -1; } );
@@ -33,15 +34,14 @@ namespace db2ent
             var entGenericDb = new EntGenericDb(entSqlServer);
             // ***
 
-            var results = "";
-
             if (entGenericDb.OpenConnection())
             {
                 // TableName and NumRecords inherited from arguments
                 var tableList = opts.TableName.Split(',');
                 foreach (var tablename in tableList)
                 {
-                    results = entGenericDb.TableToEntity(tablename.Trim(), opts.NumRecords, opts.Where);
+                    var results = entGenericDb.ToString(tablename.Trim(), opts.NumRecords, opts.Where);
+
                     // Currently outputs result to console
                     Console.WriteLine(results);
                 }

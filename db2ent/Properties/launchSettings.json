@@ -2,7 +2,7 @@
   "profiles": {
     "db2ent": {
       "commandName": "Project",
-      "commandLineArgs": "--connectionstring=\"Data Source=localhost\\TEST;Initial Catalog=TEST;User Id=sa;Password=TEST\" --tablename=Anagrafica"
+      "commandLineArgs": "--connectionstring=\"Data Source=localhost\\TEST;Initial Catalog=TEST;User Id=sa;Password=Sistemi123\" --tablename=Anagrafica,Indirizzo"
     }
   }
 }
